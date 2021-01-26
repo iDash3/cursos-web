@@ -1,11 +1,10 @@
-
-
 function getstr(str) {
     return str.substring(str.search("html"));
 }
+
 function isValid() {
     var url = window.location.href;
-    return(url.indexOf("html")!=-1);
+    return (url.indexOf("html") != -1);
 }
 
 function getfilename() {
@@ -13,45 +12,45 @@ function getfilename() {
     var filename = url.substring(url.lastIndexOf('/') + 1);
     if (filename == "") {
         return "index.html";
-    } 
+    }
 
     return filename;
 }
 
-function getModuloPercentage(){
-    var res=0;
+function getModuloPercentage() {
+    var res = 0;
 
-    var files=getFiles();
+    var files = getFiles();
     var url = window.location.href;
-    url=url.substr(url.indexOf("html/"));
-    var url_split=url.split('/');
+    url = url.substr(url.indexOf("html/"));
+    var url_split = url.split('/');
     url_split.shift(); // aqui solo se tiene modulo1/modulo2-1.html
-    var jsonTmp=files[url_split.shift()]; // se tiene el modulo como objeto
+    var jsonTmp = files[url_split.shift()]; // se tiene el modulo como objeto
     let nombrePag = url_split[0]; // se saca el nombre de la pagina que se busca
-    var totalLevel=100;
+    var totalLevel = 100;
 
     let numPag;
     let thisPage;
-    for (page in jsonTmp) { 
+    for (page in jsonTmp) {
         thisPage = jsonTmp[page];
         if (thisPage == nombrePag) {
             numPag = parseInt(page);
         }
     }
-   
-    totalLevel=totalLevel/Object.keys(jsonTmp).length;
+
+    totalLevel = totalLevel / Object.keys(jsonTmp).length;
 
     return (totalLevel * numPag).toFixed(0);
-    
+
 }
 
-function getTotalPercentage(){
-    var res=0;
+function getTotalPercentage() {
+    var res = 0;
 
-    var files=getFiles();
+    var files = getFiles();
     var url = window.location.href;
-    url=url.substr(url.indexOf("html/"));
-    var url_split=url.split('/');
+    url = url.substr(url.indexOf("html/"));
+    var url_split = url.split('/');
     url_split.shift(); // se deshace del html
     let nombreMod = url_split[0];
     let nombrePag = url_split[1];
@@ -63,8 +62,8 @@ function getTotalPercentage(){
     let thisMod;
     let thisPage;
     for (modulo in files) {
-        numPags +=  Object.keys(files[modulo]).length;
-        
+        numPags += Object.keys(files[modulo]).length;
+
         if (modulo == nombreMod) {
             thisMod = files[modulo];
             for (pagNum in thisMod) {
@@ -78,8 +77,7 @@ function getTotalPercentage(){
                     break;
                 }
             }
-        }
-        else if (status) {
+        } else if (status) {
             numPagsPasadas = numPags;
         }
     }
@@ -87,117 +85,121 @@ function getTotalPercentage(){
     return ((numPagsPasadas) / numPags).toFixed(2);
 }
 
-function generatePage(name,count){
-    var html="";
-    if(name=="temario") {
+function generatePage(name, count) {
+    var html = "";
+    if (name == "temario") {
         html += '<a class="btn btn-default" role="button" href="../temario/temario.html"';
     }
-    if(name=="index.html"){name="";}
-    if(count=="Atrás" || count== "Siguiente"){
-        html+='<a class="btn btn-default" role="button" href="./'+name+'">';
-    }else{
-        html+='<a class="btn btn-default" role="button" id="'+(name==""?"index.html":name)+'" href="./'+name+'">';
+    if (name == "index.html") { name = ""; }
+    if (count == "Atrás" || count == "Siguiente") {
+        html += '<a class="btn btn-default" role="button" href="./' + name + '">';
+    } else {
+        html += '<a class="btn btn-default" role="button" id="' + (name == "" ? "index.html" : name) + '" href="./' + name + '">';
     }
-    html+='<span>'+count+'</span>';
-    html+='</a>';
+    html += '<span>' + count + '</span>';
+    html += '</a>';
     return html;
 }
 
-function getLast(){
+function getLast() {
     var url = window.location.href;
-    url=url.substr(url.indexOf("html/"));
-    var url_split=url.split('/');
+    url = url.substr(url.indexOf("html/"));
+    var url_split = url.split('/');
     url_split.pop();
     // alert(url_split.join('/'));
     // if(getSpecialLasts().hasOwnProperty(url_split.join('/')))
     //     return getSpecialLasts().url_split.join('/');
     url_split.pop();
-    var res="";var flag=false;
-    for(var i=url_split.length-1;i>=0;i--){
-        if(url_split[i].indexOf("modulo")!=-1){
-            flag=true;
-            res+="../";
+    var res = "";
+    var flag = false;
+    for (var i = url_split.length - 1; i >= 0; i--) {
+        if (url_split[i].indexOf("modulo") != -1) {
+            flag = true;
+            res += "../";
             break;
-        }else{
-            res+="../";
+        } else {
+            res += "../";
         }
     }
-    if(!flag){
-        res+="temario/";
+    if (!flag) {
+        res += "temario/";
     }
     return res;
 }
-function getMovementBar(){
-    var res=0;
 
-    var files=getFiles();
+function getMovementBar() {
+    var res = 0;
+
+    var files = getFiles();
     var url = window.location.href;
-    url=url.substr(url.indexOf("html/"));
-    var url_split=url.split('/');
+    url = url.substr(url.indexOf("html/"));
+    var url_split = url.split('/');
     url_split.shift();
-    
-    var jsonTmp=files;
+
+    var jsonTmp = files;
     var idtmp;
-    
+
     //Get Id
-    for(var i=0;i<url_split.length;i++){
-        if(!jsonTmp.hasOwnProperty(url_split[i])){
-            if(i!=url_split.length-1){break;}
-            if(url_split[i]==""){url_split[i]="index.html";}
-            for(idtmp in jsonTmp){
-                if(jsonTmp[idtmp]==url_split[i]){
+    for (var i = 0; i < url_split.length; i++) {
+        if (!jsonTmp.hasOwnProperty(url_split[i])) {
+            if (i != url_split.length - 1) { break; }
+            if (url_split[i] == "") { url_split[i] = "index.html"; }
+            for (idtmp in jsonTmp) {
+                if (jsonTmp[idtmp] == url_split[i]) {
                     break;
                 }
             }
-        }else{
-            jsonTmp=jsonTmp[url_split[i]];
+        } else {
+            jsonTmp = jsonTmp[url_split[i]];
         }
     }
-    
-    
-    var filescount=Object.keys(jsonTmp).length;
-    
-    var html="";var html_back="";
-    var count=0;
 
-    
+
+    var filescount = Object.keys(jsonTmp).length;
+
+    var html = "";
+    var html_back = "";
+    var count = 0;
+
+
 
     //before button
-    if(parseInt(idtmp)>1){
-        html_back+=generatePage(jsonTmp[parseInt(idtmp)-1],"Atrás");
-    }else{
-        html_back+=generatePage("temario","Atrás");
+    if (parseInt(idtmp) > 1) {
+        html_back += generatePage(jsonTmp[parseInt(idtmp) - 1], "Atrás");
+    } else {
+        html_back += generatePage("temario", "Atrás");
     }
-    
+
     // hay 4 archivos
-    var rightmax=filescount-parseInt(idtmp);
-    var leftmax=parseInt(idtmp) - 1; // inclusivo con la pag actual
-    leftmax = leftmax>=2 ? 2 : leftmax;
-    leftmax=rightmax>=2?leftmax:4-rightmax;
-    
+    var rightmax = filescount - parseInt(idtmp);
+    var leftmax = parseInt(idtmp) - 1; // inclusivo con la pag actual
+    leftmax = leftmax >= 2 ? 2 : leftmax;
+    leftmax = rightmax >= 2 ? leftmax : 4 - rightmax;
+
 
     //before overall max 5
-    for(var left=parseInt(idtmp) - 1; left > 0 && count<leftmax;left--){
-        html=generatePage(jsonTmp[left],left)+html;
+    for (var left = parseInt(idtmp) - 1; left > 0 && count < leftmax; left--) {
+        html = generatePage(jsonTmp[left], left) + html;
         count++;
     }
-    html=html_back+html;
+    html = html_back + html;
     /*
     if(getLast().indexOf("temario")==-1){
         html=html+generatePage(jsonTmp[idtmp],parseInt(idtmp));count++;
     }
     */
-    html=html+generatePage(jsonTmp[idtmp],parseInt(idtmp));count++;
+    html = html + generatePage(jsonTmp[idtmp], parseInt(idtmp));
+    count++;
     //after overall max 5
-    for(var right=parseInt(idtmp) + 1;right<=filescount && count<5;right++){
-        html=html+generatePage(jsonTmp[right],right);
+    for (var right = parseInt(idtmp) + 1; right <= filescount && count < 5; right++) {
+        html = html + generatePage(jsonTmp[right], right);
         count++;
     }
     //after button
-    if(parseInt(idtmp)+1<=filescount){
-        html+=generatePage(jsonTmp[parseInt(idtmp)+1],"Siguiente");
-    }else{
-        html+=generatePage("temario","Siguiente");
+    if (parseInt(idtmp) + 1 <= filescount) {
+        html += generatePage(jsonTmp[parseInt(idtmp) + 1], "Siguiente");
+    } else {
+        html += generatePage("temario", "Siguiente");
     }
 
     return html;
@@ -217,21 +219,20 @@ function getFiles() {
             9: "modulo1-9.html",
             10: "modulo1-10.html",
             11: "modulo1-11.html",
-            12: "modulo1-12.html",
-            13: "modulo1-13.html",
-            14: "modulo1-14.html",
-            15: "modulo1-15.html",
-            16: "modulo1-16.html",
-            17: "modulo1-17.html",
-            18: "modulo1-18.html",
-            19: "modulo1-19.html",
-            20: "modulo1-20.html",
-            21: "modulo1-21.html",
-            22: "modulo1-22.html",
-            23: "modulo1-23.html",
+            12: "modulo1-26.html",
+            13: "modulo1-25.html",
+            14: "modulo1-12.html",
+            15: "modulo1-13.html",
+            16: "modulo1-14.html",
+            17: "modulo1-15.html",
+            18: "modulo1-16.html",
+            19: "modulo1-17.html",
+            20: "modulo1-18.html",
+            21: "modulo1-19.html",
+            22: "modulo1-20.html",
+            23: "modulo1-21.html",
             24: "modulo1-24.html",
-            25: "modulo1-25.html",
-            26: "modulo1-26.html",
+            25: "modulo1-27.html",
         },
         modulo2: {
             1: "modulo2-1.html",
@@ -253,21 +254,21 @@ function getFiles() {
             1: "modulo4-1.html",
         },
     };
-    
+
     return files;
 }
 
 
-$(document).ready(function(){
-    if(isValid()){
-        
-        $(".btn-group").html(getMovementBar()); 
-        setTimeout(function(){
+$(document).ready(function() {
+    if (isValid()) {
+
+        $(".btn-group").html(getMovementBar());
+        setTimeout(function() {
             document.getElementById(getfilename()).classList.remove("btn-default");
             document.getElementById(getfilename()).classList.add("btn-actual-page");
-        },250);
-    
-        show(getTotalPercentage()); 
+        }, 250);
+
+        show(getTotalPercentage());
         let modulePercentage = getModuloPercentage();
         document.getElementsByClassName("progress-bar")[0].innerHTML = modulePercentage + "%";
         document.getElementsByClassName("progress-bar")[0].style.maxWidth = "" + modulePercentage + "%";
